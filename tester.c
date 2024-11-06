@@ -13,13 +13,21 @@ int main()
 
 	if (fd == -1)
 		return (-1);
-	
+	// /*
 	do
 	{
 		str = get_next_line(fd);
 		printf(">%s", str);
 	} while (str != NULL);
-	
+	// */
+
+	// str = get_next_line(fd);
+	// printf(">%s", str);
+	// str = get_next_line(fd);
+	// printf(">%s", str);
+	// str = get_next_line(fd);
+	// printf(">%s", str);
+
 	close(fd);
 
 	return (0);
