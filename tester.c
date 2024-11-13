@@ -29,17 +29,19 @@ void	ft_realloc(char *leftover, char *buffer)
 	free(buffer);
 }
 
+char	*ft_get_line(char **leftover, char *new_line);
+
 char *ft_read(int fd, int BUFFER_SIZE)
 {
 	static char	*leftover;
 	char		*buffer;
 	ssize_t		buffer_len;
 	char		*new_line;
-	char		*line;
+	// char		*line;
 
 	if (leftover == NULL)
 		leftover = malloc(0);
-	line = NULL;
+	// line = NULL;
 	// previous phase: read and add to leftover
 	buffer = malloc(BUFFER_SIZE + 1);
 	buffer_len = read(fd, buffer, BUFFER_SIZE);
@@ -53,29 +55,39 @@ char *ft_read(int fd, int BUFFER_SIZE)
 
 	if (new_line)
 	{
-		// step 2 - get line
-		ssize_t	line_len;
-		
-		line_len = new_line - leftover + 1;
-		line = malloc(line_len + 1);
-		printf("%zu - ", line_len);
-		strncpy(line, leftover, line_len); // +1 por el \0 final
-		line[line_len] = '\0';
-
-		// step 3 - quit line from leftover
-		size_t	new_leftover_len;
-		char	*new_leftover;
-
-		new_leftover_len = strlen(new_line + 1);
-		new_leftover = malloc(new_leftover_len + 1);
-		strcpy(new_leftover, new_line + 1);
-		new_leftover[new_leftover_len] = '\0';
-
-		free(leftover);
-		leftover = new_leftover;
+		// step 4 - return line
+		return (ft_get_line(&leftover, new_line));
 	}
 	
-	// step 4 - return line
+	// step 4 - return line -> if there is not a new line is NULL (for the moment)
+	return (NULL);
+	}
+
+char	*ft_get_line(char **leftover, char *new_line)
+{
+	char		*line;
+
+	// step 2 - get line
+	ssize_t	line_len;
+	
+	line_len = new_line - *leftover + 1;
+	line = malloc(line_len + 1);
+	printf("%zu - ", line_len);
+	strncpy(line, *leftover, line_len); // +1 por el \0 final
+	line[line_len] = '\0';
+
+	// step 3 - quit line from leftover
+	size_t	new_leftover_len;
+	char	*new_leftover;
+
+	new_leftover_len = strlen(new_line + 1);
+	new_leftover = malloc(new_leftover_len + 1);
+	strcpy(new_leftover, new_line + 1);
+	new_leftover[new_leftover_len] = '\0';
+
+	free(*leftover);
+	*leftover = new_leftover;
+
 	return (line);
 }
 
