@@ -5,12 +5,35 @@
 
 #include <string.h>
 
+/**
+ * This function reallocs leftover to concatenate buffer
+ * @param leftover the content from the last read that wasnt in the returned line
+ * @param buffer the content that has been read in the current call to gnl
+ */
+void	ft_realloc(char *leftover, char *buffer)
+{
+	ssize_t	buffer_len;
+	size_t	strl;
+	size_t	realloc_size;
+	char	*leftover2;
+
+	strl = strlen(leftover);
+	buffer_len = strlen(buffer);
+
+	realloc_size = strl + (size_t) buffer_len;
+	leftover2 = realloc(leftover, realloc_size);
+	strcat(leftover2, buffer);
+	// free(leftover);
+	leftover = leftover2;
+
+	free(buffer);
+}
+
 char *ft_read(int fd, int BUFFER_SIZE)
 {
 	static char	*leftover;
 	char		*buffer;
 	ssize_t		buffer_len;
-	char		*leftover2;
 	char		*new_line;
 	char		*line;
 
@@ -23,13 +46,7 @@ char *ft_read(int fd, int BUFFER_SIZE)
 	buffer[BUFFER_SIZE] = '\0';
 	// TODO check read error (-1)
 
-	// TODO realloc leftover
-	size_t strl = strlen(leftover);
-	size_t realloc_size = strl + (size_t) buffer_len;
-	leftover2 = realloc(leftover, realloc_size);
-	strcat(leftover2, buffer);
-	// free(leftover);
-	leftover = leftover2;
+	ft_realloc(leftover, buffer);
 	
 	// step 1 - find \n
 	new_line = strchr(leftover, '\n');
@@ -58,7 +75,6 @@ char *ft_read(int fd, int BUFFER_SIZE)
 		leftover = new_leftover;
 	}
 	
-	free(buffer);
 	// step 4 - return line
 	return (line);
 }
@@ -86,6 +102,7 @@ int main(int argc, char **argv)
 		str = ft_read(fd, atoi(argv[1]));
 		printf(">%s", str);
 	} while (str != NULL);
+	free(str);
 	
 	close(fd);
 
