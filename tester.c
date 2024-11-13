@@ -14,7 +14,8 @@ char *ft_read(int fd, int BUFFER_SIZE)
 	char		*new_line;
 	char		*line;
 
-	leftover = malloc(0); // TODO only initialize on first execution
+	if (leftover == NULL)
+		leftover = malloc(0);
 	line = NULL;
 	// previous phase: read and add to leftover
 	buffer = malloc(BUFFER_SIZE + 1);
@@ -74,16 +75,17 @@ int main(int argc, char **argv)
 		return (-1);
 	
 	(void) argc;
-	str = ft_read(fd, atoi(argv[1]));
-	printf("str: <%s>", str);
+	// str = ft_read(fd, atoi(argv[1]));
+	// printf("str: <%s>", str);
 	// str = ft_read(fd, atoi(argv[1]));
 	// printf("str: <%s>", str);
 
-	// do
-	// {
-	// 	str = get_next_line(fd);
-	// 	printf(">%s", str);
-	// } while (str != NULL);
+	do
+	{
+		// str = get_next_line(fd);
+		str = ft_read(fd, atoi(argv[1]));
+		printf(">%s", str);
+	} while (str != NULL);
 	
 	close(fd);
 
