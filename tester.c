@@ -47,6 +47,7 @@ char *ft_read(int fd, int BUFFER_SIZE)
 	buffer_len = read(fd, buffer, BUFFER_SIZE);
 	buffer[BUFFER_SIZE] = '\0';
 	// TODO check read error (-1)
+	printf("buf_len: %zu\t- leftover_len: %zu ", buffer_len, strlen(leftover));
 
 	ft_realloc(leftover, buffer);
 	
@@ -72,7 +73,7 @@ char	*ft_get_line(char **leftover, char *new_line)
 	
 	line_len = new_line - *leftover + 1;
 	line = malloc(line_len + 1);
-	printf("%zu - ", line_len);
+	// printf("%zu - ", line_len);
 	strncpy(line, *leftover, line_len); // +1 por el \0 final
 	line[line_len] = '\0';
 
