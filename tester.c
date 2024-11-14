@@ -41,15 +41,26 @@ char *ft_read(int fd, int BUFFER_SIZE)
 
 	if (leftover == NULL)
 		leftover = malloc(0);
-	// line = NULL;
+	// printf("\nleftover [%s]\n\n", leftover);
 	// previous phase: read and add to leftover
 	buffer = malloc(BUFFER_SIZE + 1);
 	buffer_len = read(fd, buffer, BUFFER_SIZE);
 	buffer[BUFFER_SIZE] = '\0';
 	// TODO check read error (-1)
-	printf("buf_len: %zu\t- leftover_len: %zu ", buffer_len, strlen(leftover));
+	// printf("buf_len: %zu\t- leftover_len: %zu ", buffer_len, strlen(leftover));
 
-	ft_realloc(leftover, buffer);
+	if (buffer_len == 0 && strlen(leftover) == 0)
+	{
+		return (NULL);
+	}
+	
+	if (buffer_len != 0)
+	{
+		ft_realloc(leftover, buffer);
+	}
+
+	// printf("\n\nleftover before realloc [%s]\n\n", leftover);
+
 	
 	// step 1 - find \n
 	new_line = strchr(leftover, '\n');
@@ -59,6 +70,12 @@ char *ft_read(int fd, int BUFFER_SIZE)
 		// step 4 - return line
 		return (ft_get_line(&leftover, new_line));
 	}
+	else if (buffer_len == 0 && strlen(leftover) > 0)
+	{
+		
+		return (ft_get_line(&leftover, strchr(leftover, '\0')));
+	}
+	
 	
 	// step 4 - return line -> if there is not a new line is NULL (for the moment)
 	return (NULL);
