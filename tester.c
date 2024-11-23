@@ -10,7 +10,7 @@
  * @param leftover the content from the last read that wasnt in the returned line
  * @param buffer the content that has been read in the current call to gnl
  */
-void	ft_realloc(char *leftover, char *buffer)
+void	ft_realloc(char *leftover, char *buffer) // ! UNUSED
 {
 	ssize_t	buffer_len;
 	size_t	leftover_len;
@@ -27,7 +27,8 @@ void	ft_realloc(char *leftover, char *buffer)
 	// free(leftover);
 	leftover = leftover2;
 
-	free(buffer);
+	// printf("free at realloc %p\n", buffer);
+	// free(buffer);
 }
 
 char	*ft_get_line(char **leftover, char *new_line);
@@ -94,7 +95,15 @@ int ft_read_and_alloc(int fd, char **leftover, int BUFFER_SIZE)
 	// something read
 	if (buffer_len != 0)
 	{
-		ft_realloc(*leftover, buffer);
+		// ft_realloc(*leftover, buffer);
+		char	*old_leftover = *leftover;
+		*leftover = ft_strjoin(*leftover, buffer);
+
+		// printf("free buffer %p\n", buffer);
+		free(buffer);
+
+		// printf("free old_leftover %p\n", buffer);
+		free(old_leftover);
 		return (1);
 	}
 	// printf("\n\nleftover before realloc [%s]\n\n", leftover);
@@ -125,6 +134,7 @@ char	*ft_get_line(char **leftover, char *new_line)
 	strcpy(new_leftover, new_line + 1);
 	new_leftover[new_leftover_len] = '\0';
 
+	// printf("free %p\n", leftover);
 	free(*leftover);
 	*leftover = new_leftover;
 
@@ -136,7 +146,7 @@ char	*ft_get_line(char **leftover, char *new_line)
 int main(int argc, char **argv)
 {
 	char	*str = NULL;
-	char	*filename = "txt";
+	char	*filename = "txt2";
 	int		fd = open(filename, O_RDONLY);
 
 	if (fd == -1)
