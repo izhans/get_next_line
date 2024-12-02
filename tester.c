@@ -148,6 +148,7 @@ int main(int argc, char **argv)
 	char	*str = NULL;
 	char	*filename = "txt2";
 	int		fd = open(filename, O_RDONLY);
+	int		BUFFER_SIZE = (argc == 2) ? atoi(argv[1]) : 12;
 
 	if (fd == -1)
 		return (-1);
@@ -161,7 +162,7 @@ int main(int argc, char **argv)
 	do
 	{
 		// str = get_next_line(fd);
-		str = ft_read(fd, atoi(argv[1]));
+		str = ft_read(fd, BUFFER_SIZE);
 		printf(">%s", str);
 	} while (str != NULL);
 	free(str);
