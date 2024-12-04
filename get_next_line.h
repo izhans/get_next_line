@@ -6,8 +6,11 @@
 /*   By: isastre- <isastre-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 20:53:54 by isastre-          #+#    #+#             */
-/*   Updated: 2024/12/04 20:53:57 by isastre-         ###   ########.fr       */
+/*   Updated: 2024/12/04 21:07:16 by isastre-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include <fcntl.h>
+#include <stdlib.h>
 
 char	*get_next_line(int fd);

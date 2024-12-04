@@ -1,10 +1,11 @@
 #include <stdio.h>
 #include <fcntl.h>
+#include <unistd.h>
 #include "get_next_line.h"
 
 int main()
 {
-	int filename;
+	char *filename;
 	int fd;
 
 	filename = "txt";
@@ -12,7 +13,7 @@ int main()
 
 	char *line;
 
-	while (line = get_next_line(fd))
+	while ((line = get_next_line(fd)))
 	{
 		printf("%s", line);
 		free(line);
