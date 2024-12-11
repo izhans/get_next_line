@@ -6,7 +6,7 @@
 /*   By: isastre- <isastre-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 20:53:28 by isastre-          #+#    #+#             */
-/*   Updated: 2024/12/11 17:21:04 by isastre-         ###   ########.fr       */
+/*   Updated: 2024/12/11 18:02:27 by isastre-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,23 +34,26 @@ char	*get_next_line(int fd)
 		line = malloc(0);
 	
 	populate_line(fd, &line);
+	// printf("line after populate_line <%s>\n", line);
 	if (line == NULL)
 		return (NULL);
-	return (get_line(&line));
+	char *next_line = get_line(&line);
+	// printf("line after get_line -> line: <%s> - next_line: <%s>", line, next_line);
+	return (next_line);
 }
 
 void	populate_line(int fd, char **line)
 {
-	printf("----populate_line starts----\n\n");
+	// printf("----populate_line starts----\n\n");
 	char	*buffer;
 	int		read_chars;
 
-	while (!has_new_line(*line)) // ! plantear caso EOF
+	while (!has_new_line(*line)) // ! plantear caso EOF (&& read_chars > 0)
 	{
 		buffer = malloc(BUFFER_SIZE + 1); // TODO: null check
 		read_chars = read(fd, buffer, BUFFER_SIZE);
 		// TODO: ver si se pueden unificar estos 2 ifs
-		printf("read_chars: %d\n", read_chars);
+		// printf("read_chars: %d\n", read_chars);
 		if (read_chars < 0) // error en read (-1)
 		{
 			free(buffer);
@@ -61,16 +64,17 @@ void	populate_line(int fd, char **line)
 		if (read_chars == 0) // EOF // ! esto esta mal planteado porque borro sin tener la ultima linea
 		{
 			free(buffer);
-			*line = NULL; // ? esto ya deberia ser NULL?
+			// *line = NULL; // ? esto ya deberia ser NULL?
 			return ;
 		}
-		printf("populate_line bf concat - line: %s buffer: %s\n", *line, buffer);
+		// printf("populate_line bf concat - line: %s buffer: %s\n", *line, buffer);
 		concat_buffer_to_line(buffer, line);
-		printf("populate_line free bf - line: %s buffer: %s\n", *line, buffer);
+		// printf("populate_line free bf - line: %s buffer: %s\n", *line, buffer);
 		free(buffer); // ? free aqui o dentro de concat?
-		printf("populate_line free af - line: %s buffer: %s\n", *line, buffer);
+		// printf("populate_line free af - line: %s buffer: %s\n", *line, buffer);
 	}
-	printf("----populate_line ends----\n\n");
+	// printf("populate_line final - line: <%s> buffer: <%s>\n\n", *line, buffer);
+	// printf("----populate_line ends----\n\n");
 }
 
 int	has_new_line(char *line)
@@ -131,20 +135,28 @@ int	ft_strlen(char *str)
 
 char	*get_line(char **line)
 {
+	// printf("----get_line starts----\n\n");
 	char	*next_line;
 	int		new_line_index;
 	int		i;
 
+	if (ft_strlen(*line) == 0)
+	{
+		return (NULL);
+	}
+	
 	new_line_index = where_is_new_line(*line);
 	next_line = malloc(new_line_index + 2); // ! +2: 1 por el \0 del final y el otro porque estoy obteniendo el index en vez del tamaño
 	i = 0;
 	while (i <= new_line_index)
 	{
-		next_line[i] = *line[i];
+		next_line[i] = (*line)[i];
 		i++;
 	}
 	next_line[i] = '\0';
+	// printf("\tnext_line: <%s>\n", next_line);
 	clean_line(line, new_line_index);
+	// printf("----get_line ends----\n\n");
 	return (next_line);
 }
 
@@ -166,20 +178,29 @@ int	where_is_new_line(char *line) // devuelve el index del \n -> a\n devuelve 1 
 
 void	clean_line(char **line, int new_line_index)
 {
+	// printf("\t----clean_line starts----\n\n");
 	int		line_len;
 	char	*tmp_line;
 	int		i;
 
 	line_len = ft_strlen(*line);
+	if (line_len == 0)
+	{
+		*line = NULL;
+		return ;
+	}
+	
 	tmp_line = malloc(line_len - new_line_index); // no hay que hacer +1 porque estoy restando el index del \n y no la longitud hasta el
 	i = 0;
-	while (*line[new_line_index + 1])
+	while ((*line)[new_line_index + 1])
 	{
-		tmp_line[i] = *line[new_line_index + 1];
+		tmp_line[i] = (*line)[new_line_index + 1];
 		i++;
 		new_line_index++;
 	}
 	tmp_line[i] = '\0';
 	free(*line);
-	line = &tmp_line;
+	*line = tmp_line;
+	// printf("\tline: %s", *line);
+	// printf("\t----clean_line ends----\n\n");
 }

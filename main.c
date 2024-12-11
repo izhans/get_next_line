@@ -15,8 +15,10 @@ int main()
 	int i;
 
 	i = 0;
+	// while (i < 10)
 	while ((line = get_next_line(fd)))
 	{
+		// line = get_next_line(fd);
 		printf("line %d: %s", i, line);
 		free(line);
 		i++;
