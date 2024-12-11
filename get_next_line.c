@@ -6,12 +6,16 @@
 /*   By: isastre- <isastre-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 20:53:28 by isastre-          #+#    #+#             */
-/*   Updated: 2024/12/11 16:30:24 by isastre-         ###   ########.fr       */
+/*   Updated: 2024/12/11 17:21:04 by isastre-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#define BUFFER_SIZE 1
+#ifndef BUFFER_SIZE
+	#define BUFFER_SIZE 1
+#endif
+
+#include <stdio.h> // TODO: delete
 
 void	populate_line(int fd, char **line);
 int		has_new_line(char *line);
@@ -37,6 +41,7 @@ char	*get_next_line(int fd)
 
 void	populate_line(int fd, char **line)
 {
+	printf("----populate_line starts----\n\n");
 	char	*buffer;
 	int		read_chars;
 
@@ -45,6 +50,7 @@ void	populate_line(int fd, char **line)
 		buffer = malloc(BUFFER_SIZE + 1); // TODO: null check
 		read_chars = read(fd, buffer, BUFFER_SIZE);
 		// TODO: ver si se pueden unificar estos 2 ifs
+		printf("read_chars: %d\n", read_chars);
 		if (read_chars < 0) // error en read (-1)
 		{
 			free(buffer);
@@ -58,9 +64,13 @@ void	populate_line(int fd, char **line)
 			*line = NULL; // ? esto ya deberia ser NULL?
 			return ;
 		}
+		printf("populate_line bf concat - line: %s buffer: %s\n", *line, buffer);
 		concat_buffer_to_line(buffer, line);
+		printf("populate_line free bf - line: %s buffer: %s\n", *line, buffer);
 		free(buffer); // ? free aqui o dentro de concat?
+		printf("populate_line free af - line: %s buffer: %s\n", *line, buffer);
 	}
+	printf("----populate_line ends----\n\n");
 }
 
 int	has_new_line(char *line)
@@ -76,19 +86,22 @@ int	has_new_line(char *line)
 
 void	concat_buffer_to_line(char *buffer, char **line)
 {
+	// printf("\t----concat_buffer_to_line starts----\n\n");
 	int		line_len;
 	int		buffer_len; // = read_chars // ? me compensa pasarlo como parametro de entrada
 	char	*concatenated_line;
 	int		i;
 	int		j;
 
+	// printf("\tline: %s buffer: %s\n", *line, buffer);
 	line_len = ft_strlen(*line);
 	buffer_len = ft_strlen(buffer);
 	concatenated_line = malloc(line_len + buffer_len + 1);
+	// printf("\tconcatenated_line size: %d\n", line_len + buffer_len + 1);
 	i = 0;
-	while (*line[i]) // ? puede dar error si *line es NULL
+	while ((*line)[i]) // ? puede dar error si *line es NULL
 	{
-		concatenated_line[i] = *line[i];
+		concatenated_line[i] = (*line)[i];
 		i++;
 	}
 	j = 0;
@@ -97,9 +110,11 @@ void	concat_buffer_to_line(char *buffer, char **line)
 		concatenated_line[i + j] = buffer[j];
 		j++;
 	}
+	// printf("\tACK: buffer copied\n");
 	concatenated_line[i + j] = '\0';
-	free(line);
-	line = &concatenated_line;
+	free(*line);
+	*line = concatenated_line;
+	// printf("\t----concat_buffer_to_line ends----\n\n");
 }
 
 int	ft_strlen(char *str)
