@@ -6,12 +6,20 @@
 /*   By: isastre- <isastre-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 20:53:28 by isastre-          #+#    #+#             */
-/*   Updated: 2024/12/11 14:19:07 by isastre-         ###   ########.fr       */
+/*   Updated: 2024/12/11 16:25:08 by isastre-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 #define BUFFER_SIZE 1
+
+void	populate_line(int fd, char **line);
+int		has_new_line(char *line);
+void	concat_buffer_to_line(char *buffer, char **line);
+int		ft_strlen(char *str);
+char	*get_line(char **line);
+int		where_is_new_line(char *line);
+void	clean_line(char **line, int new_line_index);
 
 // TODO: change function names to ft_<function_name>
 char	*get_next_line(int fd)
@@ -109,7 +117,7 @@ char	*get_line(char **line)
 	int		new_line_index;
 	int		i;
 
-	new_line_index = where_is_new_line(line);
+	new_line_index = where_is_new_line(*line);
 	next_line = malloc(new_line_index + 2); // ! +2: 1 por el \0 del final y el otro porque estoy obteniendo el index en vez del tamaño
 	i = 0;
 	while (i <= new_line_index)
@@ -144,7 +152,7 @@ void	clean_line(char **line, int new_line_index)
 	char	*tmp_line;
 	int		i;
 
-	line_len = ft_strlen(line);
+	line_len = ft_strlen(*line);
 	tmp_line = malloc(line_len - new_line_index); // no hay que hacer +1 porque estoy restando el index del \n y no la longitud hasta el
 	i = 0;
 	while (*line[new_line_index + 1])
@@ -155,5 +163,5 @@ void	clean_line(char **line, int new_line_index)
 	}
 	tmp_line[i] = '\0';
 	free(*line);
-	line = tmp_line;
+	line = &tmp_line;
 }
