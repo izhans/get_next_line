@@ -12,11 +12,14 @@ int main()
 	fd = open(filename, O_RDONLY);
 
 	char *line;
+	int i;
 
+	i = 0;
 	while ((line = get_next_line(fd)))
 	{
-		printf("%s", line);
+		printf("line %d: %s", i, line);
 		free(line);
+		i++;
 	}
 	
 	close(fd);
