@@ -6,7 +6,7 @@
 /*   By: isastre- <isastre-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 20:53:28 by isastre-          #+#    #+#             */
-/*   Updated: 2024/12/11 18:02:27 by isastre-         ###   ########.fr       */
+/*   Updated: 2024/12/18 20:47:22 by isastre-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,6 +142,7 @@ char	*get_line(char **line)
 
 	if (ft_strlen(*line) == 0)
 	{
+		free(*line);
 		return (NULL);
 	}
 	
