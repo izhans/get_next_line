@@ -6,7 +6,7 @@
 /*   By: isastre- <isastre-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 20:53:28 by isastre-          #+#    #+#             */
-/*   Updated: 2024/12/18 22:52:42 by isastre-         ###   ########.fr       */
+/*   Updated: 2024/12/18 22:57:48 by isastre-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,10 @@ char	*get_next_line(int fd)
 	static char	*line;
 
 	if (!line)
-		line = malloc(0);
+	{
+		line = malloc(1);
+		line[0] = '\0';
+	}
 	
 	populate_line(fd, &line);
 	// printf("line after populate_line <%s>\n", line);
