@@ -6,7 +6,7 @@
 /*   By: isastre- <isastre-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 20:53:28 by isastre-          #+#    #+#             */
-/*   Updated: 2024/12/18 22:57:48 by isastre-         ###   ########.fr       */
+/*   Updated: 2024/12/18 23:32:12 by isastre-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void	populate_line(int fd, char **line)
 			*line = NULL;
 			return ;
 		}
-		if (read_chars == 0) // EOF // ! esto esta mal planteado porque borro sin tener la ultima linea
+		if (read_chars == 0) // EOF
 		{
 			free(buffer);
 			if (ft_strlen(*line) == 0)
@@ -193,8 +193,14 @@ void	clean_line(char **line, int new_line_index)
 	int		i;
 
 	line_len = ft_strlen(*line);
-	if (line_len == 0)
+	if (line_len == 0) // ? juraria que esto nunca puede ejecutarse porque se corta antes de llegar aqui
 	{
+		*line = NULL;
+		return ;
+	}
+	if (line_len - new_line_index == 0)
+	{
+		free(*line);
 		*line = NULL;
 		return ;
 	}
