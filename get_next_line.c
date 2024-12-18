@@ -6,7 +6,7 @@
 /*   By: isastre- <isastre-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 20:53:28 by isastre-          #+#    #+#             */
-/*   Updated: 2024/12/18 20:47:22 by isastre-         ###   ########.fr       */
+/*   Updated: 2024/12/18 22:52:42 by isastre-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ void	populate_line(int fd, char **line)
 	{
 		buffer = malloc(BUFFER_SIZE + 1); // TODO: null check
 		read_chars = read(fd, buffer, BUFFER_SIZE);
+		buffer[read_chars] = '\0';
 		// TODO: ver si se pueden unificar estos 2 ifs
 		// printf("read_chars: %d\n", read_chars);
 		if (read_chars < 0) // error en read (-1)
@@ -64,7 +65,11 @@ void	populate_line(int fd, char **line)
 		if (read_chars == 0) // EOF // ! esto esta mal planteado porque borro sin tener la ultima linea
 		{
 			free(buffer);
-			// *line = NULL; // ? esto ya deberia ser NULL?
+			if (ft_strlen(*line) == 0)
+			{
+				free(*line);
+				*line = NULL; // ? esto ya deberia ser NULL?
+			}
 			return ;
 		}
 		// printf("populate_line bf concat - line: %s buffer: %s\n", *line, buffer);

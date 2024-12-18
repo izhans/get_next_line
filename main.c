@@ -14,7 +14,7 @@ int main()
 	char *line;
 	int i;
 
-	i = 0;
+	i = 1;
 	// while (i < 10)
 	while ((line = get_next_line(fd)))
 	{
@@ -25,6 +25,8 @@ int main()
 	}
 	
 	close(fd);
+
+	printf("---end---\n\n");
 
 	return 0;
 }
