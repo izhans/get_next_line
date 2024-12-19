@@ -6,7 +6,7 @@
 /*   By: isastre- <isastre-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 20:53:28 by isastre-          #+#    #+#             */
-/*   Updated: 2024/12/19 16:40:10 by isastre-         ###   ########.fr       */
+/*   Updated: 2024/12/19 16:48:04 by isastre-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void	populate_line(int fd, char **line)
 		}
 		buffer[read_chars] = '\0'; // se coloca despues porque en caso de haber error estaria escribiendo en posiciones que no son mias
 		concat_buffer_to_line(buffer, line);
-		free(buffer); // ? free aqui o dentro de concat?
+		free(buffer);
 	}
 }
 
@@ -81,6 +81,8 @@ void	concat_buffer_to_line(char *buffer, char **line)
 	line_len = ft_strlen(*line);
 	buffer_len = ft_strlen(buffer);
 	concatenated_line = malloc(line_len + buffer_len + 1);
+	if (concatenated_line == NULL)
+		return (ft_free(line));
 	// printf("\tconcatenated_line size: %d\n", line_len + buffer_len + 1);
 	i = 0;
 	while ((*line)[i]) // ? puede dar error si *line es NULL
