@@ -6,7 +6,7 @@
 /*   By: isastre- <isastre-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 20:53:28 by isastre-          #+#    #+#             */
-/*   Updated: 2024/12/19 16:53:26 by isastre-         ###   ########.fr       */
+/*   Updated: 2024/12/19 16:57:28 by isastre-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,6 +146,8 @@ void	clean_line(char **line, int new_line_index)
 		return ft_free(line);
 	
 	tmp_line = malloc(line_len - new_line_index); // no hay que hacer +1 porque estoy restando el index del \n y no la longitud hasta el
+	if (tmp_line == NULL)
+		return (ft_free(line));
 	i = 0;
 	while ((*line)[new_line_index + 1])
 	{
