@@ -6,7 +6,7 @@
 /*   By: isastre- <isastre-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 20:53:28 by isastre-          #+#    #+#             */
-/*   Updated: 2024/12/19 16:48:04 by isastre-         ###   ########.fr       */
+/*   Updated: 2024/12/19 16:53:26 by isastre-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,13 +111,11 @@ char	*ft_get_line(char **line)
 	int		i;
 
 	if (ft_strlen(*line) == 0)
-	{
-		free(*line);
-		return (NULL);
-	}
-	
+		return (ft_free(line), NULL);
 	new_line_index = where_is_new_line(*line);
 	next_line = malloc(new_line_index + 2); // ! +2: 1 por el \0 del final y el otro porque estoy obteniendo el index en vez del tamaño
+	if (next_line == NULL)
+		return (ft_free(line), NULL);
 	i = 0;
 	while (i <= new_line_index)
 	{
