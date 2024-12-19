@@ -6,7 +6,7 @@
 /*   By: isastre- <isastre-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 20:53:28 by isastre-          #+#    #+#             */
-/*   Updated: 2024/12/19 16:57:28 by isastre-         ###   ########.fr       */
+/*   Updated: 2024/12/19 17:21:04 by isastre-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 #include <stdio.h> // TODO: delete
 
 void	populate_line(int fd, char **line);
-void	concat_buffer_to_line(char *buffer, char **line);
+void	ft_concat_buffer_to_line(char *buffer, char **line, int buffer_len);
 char	*ft_get_line(char **line);
 void	clean_line(char **line, int new_line_index);
 
@@ -53,7 +53,7 @@ void	populate_line(int fd, char **line)
 	{
 		buffer = malloc(BUFFER_SIZE + 1);
 		if (buffer == NULL)
-			return ft_free(line);
+			return (ft_free(line));
 		read_chars = read(fd, buffer, BUFFER_SIZE);
 		if (read_chars <= 0) // error en read (-1) o EOF (0)
 		{
@@ -63,29 +63,24 @@ void	populate_line(int fd, char **line)
 			return ;
 		}
 		buffer[read_chars] = '\0'; // se coloca despues porque en caso de haber error estaria escribiendo en posiciones que no son mias
-		concat_buffer_to_line(buffer, line);
+		ft_concat_buffer_to_line(buffer, line, read_chars);
 		free(buffer);
 	}
 }
 
-void	concat_buffer_to_line(char *buffer, char **line)
+void	ft_concat_buffer_to_line(char *buffer, char **line, int buffer_len)
 {
-	// printf("\t----concat_buffer_to_line starts----\n\n");
 	int		line_len;
-	int		buffer_len; // = read_chars // ? me compensa pasarlo como parametro de entrada
 	char	*concatenated_line;
 	int		i;
 	int		j;
 
-	// printf("\tline: %s buffer: %s\n", *line, buffer);
 	line_len = ft_strlen(*line);
-	buffer_len = ft_strlen(buffer);
 	concatenated_line = malloc(line_len + buffer_len + 1);
 	if (concatenated_line == NULL)
 		return (ft_free(line));
-	// printf("\tconcatenated_line size: %d\n", line_len + buffer_len + 1);
 	i = 0;
-	while ((*line)[i]) // ? puede dar error si *line es NULL
+	while ((*line)[i])
 	{
 		concatenated_line[i] = (*line)[i];
 		i++;
@@ -96,11 +91,9 @@ void	concat_buffer_to_line(char *buffer, char **line)
 		concatenated_line[i + j] = buffer[j];
 		j++;
 	}
-	// printf("\tACK: buffer copied\n");
 	concatenated_line[i + j] = '\0';
 	free(*line);
 	*line = concatenated_line;
-	// printf("\t----concat_buffer_to_line ends----\n\n");
 }
 
 char	*ft_get_line(char **line)
