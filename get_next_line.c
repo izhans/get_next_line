@@ -6,7 +6,7 @@
 /*   By: isastre- <isastre-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 20:53:28 by isastre-          #+#    #+#             */
-/*   Updated: 2024/12/19 16:29:00 by isastre-         ###   ########.fr       */
+/*   Updated: 2024/12/19 16:40:10 by isastre-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,8 @@
 #include <stdio.h> // TODO: delete
 
 void	populate_line(int fd, char **line);
-int		has_new_line(char *line);
 void	concat_buffer_to_line(char *buffer, char **line);
-int		ft_strlen(char *str);
 char	*ft_get_line(char **line);
-int		where_is_new_line(char *line);
 void	clean_line(char **line, int new_line_index);
 
 // TODO: change function names to ft_<function_name>
@@ -71,17 +68,6 @@ void	populate_line(int fd, char **line)
 	}
 }
 
-int	has_new_line(char *line)
-{
-	while (*line)
-	{
-		if (*line == '\n')
-			return (1);
-		line++;
-	}
-	return (0);
-}
-
 void	concat_buffer_to_line(char *buffer, char **line)
 {
 	// printf("\t----concat_buffer_to_line starts----\n\n");
@@ -115,18 +101,6 @@ void	concat_buffer_to_line(char *buffer, char **line)
 	// printf("\t----concat_buffer_to_line ends----\n\n");
 }
 
-int	ft_strlen(char *str)
-{
-	int	i;
-
-	i = 0;
-	if (str == NULL)
-		return (0);
-	while (str[i])
-		i++;
-	return (i);
-}
-
 char	*ft_get_line(char **line)
 {
 	// printf("----ft_get_line starts----\n\n");
@@ -153,22 +127,6 @@ char	*ft_get_line(char **line)
 	clean_line(line, new_line_index);
 	// printf("----ft_get_line ends----\n\n");
 	return (next_line);
-}
-
-int	where_is_new_line(char *line) // devuelve el index del \n -> a\n devuelve 1 [0: a][1: \n]
-{
-	int	i;
-
-	i = 0;
-	if (line == NULL) // ? esto no deberia poder pasar?
-		return (0);
-	while (line[i])
-	{
-		if (line[i] == '\n')
-			return (i); // ? cambiar por un break para tener solo un return?
-		i++;
-	}
-	return (i); // ! caso EOF
 }
 
 void	clean_line(char **line, int new_line_index)
