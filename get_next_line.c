@@ -6,7 +6,7 @@
 /*   By: isastre- <isastre-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 20:53:28 by isastre-          #+#    #+#             */
-/*   Updated: 2024/12/18 23:32:12 by isastre-         ###   ########.fr       */
+/*   Updated: 2024/12/19 16:17:08 by isastre-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	populate_line(int fd, char **line);
 int		has_new_line(char *line);
 void	concat_buffer_to_line(char *buffer, char **line);
 int		ft_strlen(char *str);
-char	*get_line(char **line);
+char	*ft_get_line(char **line);
 int		where_is_new_line(char *line);
 void	clean_line(char **line, int new_line_index);
 
@@ -40,49 +40,40 @@ char	*get_next_line(int fd)
 	// printf("line after populate_line <%s>\n", line);
 	if (line == NULL)
 		return (NULL);
-	char *next_line = get_line(&line);
-	// printf("line after get_line -> line: <%s> - next_line: <%s>", line, next_line);
+	char *next_line = ft_get_line(&line);
+	// printf("line after ft_get_line -> line: <%s> - next_line: <%s>", line, next_line);
 	return (next_line);
 }
 
 void	populate_line(int fd, char **line)
 {
-	// printf("----populate_line starts----\n\n");
 	char	*buffer;
 	int		read_chars;
 
-	while (!has_new_line(*line)) // ! plantear caso EOF (&& read_chars > 0)
+	while (!has_new_line(*line))
 	{
-		buffer = malloc(BUFFER_SIZE + 1); // TODO: null check
-		read_chars = read(fd, buffer, BUFFER_SIZE);
-		buffer[read_chars] = '\0';
-		// TODO: ver si se pueden unificar estos 2 ifs
-		// printf("read_chars: %d\n", read_chars);
-		if (read_chars < 0) // error en read (-1)
+		buffer = malloc(BUFFER_SIZE + 1);
+		if (buffer == NULL)
 		{
-			free(buffer);
 			free(*line);
 			*line = NULL;
 			return ;
 		}
-		if (read_chars == 0) // EOF
+		read_chars = read(fd, buffer, BUFFER_SIZE);
+		if (read_chars <= 0) // error en read (-1) o EOF (0)
 		{
 			free(buffer);
-			if (ft_strlen(*line) == 0)
+			if (read_chars < 0 || ft_strlen(*line) == 0)
 			{
 				free(*line);
-				*line = NULL; // ? esto ya deberia ser NULL?
+				*line = NULL;
 			}
 			return ;
 		}
-		// printf("populate_line bf concat - line: %s buffer: %s\n", *line, buffer);
+		buffer[read_chars] = '\0'; // se coloca despues porque en caso de haber error estaria escribiendo en posiciones que no son mias
 		concat_buffer_to_line(buffer, line);
-		// printf("populate_line free bf - line: %s buffer: %s\n", *line, buffer);
 		free(buffer); // ? free aqui o dentro de concat?
-		// printf("populate_line free af - line: %s buffer: %s\n", *line, buffer);
 	}
-	// printf("populate_line final - line: <%s> buffer: <%s>\n\n", *line, buffer);
-	// printf("----populate_line ends----\n\n");
 }
 
 int	has_new_line(char *line)
@@ -141,9 +132,9 @@ int	ft_strlen(char *str)
 	return (i);
 }
 
-char	*get_line(char **line)
+char	*ft_get_line(char **line)
 {
-	// printf("----get_line starts----\n\n");
+	// printf("----ft_get_line starts----\n\n");
 	char	*next_line;
 	int		new_line_index;
 	int		i;
@@ -165,7 +156,7 @@ char	*get_line(char **line)
 	next_line[i] = '\0';
 	// printf("\tnext_line: <%s>\n", next_line);
 	clean_line(line, new_line_index);
-	// printf("----get_line ends----\n\n");
+	// printf("----ft_get_line ends----\n\n");
 	return (next_line);
 }
 
