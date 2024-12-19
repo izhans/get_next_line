@@ -6,7 +6,7 @@
 /*   By: isastre- <isastre-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 20:53:28 by isastre-          #+#    #+#             */
-/*   Updated: 2024/12/19 16:18:47 by isastre-         ###   ########.fr       */
+/*   Updated: 2024/12/19 16:29:00 by isastre-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,20 +56,13 @@ void	populate_line(int fd, char **line)
 	{
 		buffer = malloc(BUFFER_SIZE + 1);
 		if (buffer == NULL)
-		{
-			free(*line);
-			*line = NULL;
-			return ;
-		}
+			return ft_free(line);
 		read_chars = read(fd, buffer, BUFFER_SIZE);
 		if (read_chars <= 0) // error en read (-1) o EOF (0)
 		{
 			free(buffer);
 			if (read_chars < 0 || ft_strlen(*line) == 0)
-			{
-				free(*line);
-				*line = NULL;
-			}
+				ft_free(line);
 			return ;
 		}
 		buffer[read_chars] = '\0'; // se coloca despues porque en caso de haber error estaria escribiendo en posiciones que no son mias
@@ -192,11 +185,7 @@ void	clean_line(char **line, int new_line_index)
 		return ;
 	}
 	if (line_len - new_line_index == 0)
-	{
-		free(*line);
-		*line = NULL;
-		return ;
-	}
+		return ft_free(line);
 	
 	tmp_line = malloc(line_len - new_line_index); // no hay que hacer +1 porque estoy restando el index del \n y no la longitud hasta el
 	i = 0;
