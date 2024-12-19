@@ -6,7 +6,7 @@
 /*   By: isastre- <isastre-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 20:53:28 by isastre-          #+#    #+#             */
-/*   Updated: 2024/12/19 16:17:08 by isastre-         ###   ########.fr       */
+/*   Updated: 2024/12/19 16:18:47 by isastre-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ char	*get_next_line(int fd)
 	if (!line)
 	{
 		line = malloc(1);
+		if (line == NULL)
+			return (NULL);
 		line[0] = '\0';
 	}
 	
