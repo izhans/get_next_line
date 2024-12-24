@@ -6,7 +6,7 @@
 /*   By: isastre- <isastre-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 20:53:28 by isastre-          #+#    #+#             */
-/*   Updated: 2024/12/19 17:21:04 by isastre-         ###   ########.fr       */
+/*   Updated: 2024/12/24 01:03:05 by isastre-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	populate_line(int fd, char **line)
 	char	*buffer;
 	int		read_chars;
 
-	while (!has_new_line(*line))
+	while (!ft_has_new_line(*line))
 	{
 		buffer = malloc(BUFFER_SIZE + 1);
 		if (buffer == NULL)
@@ -98,33 +98,29 @@ void	ft_concat_buffer_to_line(char *buffer, char **line, int buffer_len)
 
 char	*ft_get_line(char **line)
 {
-	// printf("----ft_get_line starts----\n\n");
 	char	*next_line;
 	int		new_line_index;
 	int		i;
 
 	if (ft_strlen(*line) == 0)
 		return (ft_free(line), NULL);
-	new_line_index = where_is_new_line(*line);
-	next_line = malloc(new_line_index + 2); // ! +2: 1 por el \0 del final y el otro porque estoy obteniendo el index en vez del tamaño
+	new_line_index = ft_where_is_new_line(*line);
+	next_line = malloc(new_line_index + 1);
 	if (next_line == NULL)
 		return (ft_free(line), NULL);
 	i = 0;
-	while (i <= new_line_index)
+	while (i < new_line_index)
 	{
 		next_line[i] = (*line)[i];
 		i++;
 	}
 	next_line[i] = '\0';
-	// printf("\tnext_line: <%s>\n", next_line);
 	clean_line(line, new_line_index);
-	// printf("----ft_get_line ends----\n\n");
 	return (next_line);
 }
 
 void	clean_line(char **line, int new_line_index)
 {
-	// printf("\t----clean_line starts----\n\n");
 	int		line_len;
 	char	*tmp_line;
 	int		i;
@@ -135,22 +131,20 @@ void	clean_line(char **line, int new_line_index)
 		*line = NULL;
 		return ;
 	}
-	if (line_len - new_line_index == 0)
+	if (line_len - new_line_index + 1 == 0)
 		return ft_free(line);
 	
-	tmp_line = malloc(line_len - new_line_index); // no hay que hacer +1 porque estoy restando el index del \n y no la longitud hasta el
+	tmp_line = malloc(line_len - new_line_index + 1);
 	if (tmp_line == NULL)
 		return (ft_free(line));
 	i = 0;
-	while ((*line)[new_line_index + 1])
+	while ((*line)[new_line_index])
 	{
-		tmp_line[i] = (*line)[new_line_index + 1];
+		tmp_line[i] = (*line)[new_line_index];
 		i++;
 		new_line_index++;
 	}
 	tmp_line[i] = '\0';
 	free(*line);
 	*line = tmp_line;
-	// printf("\tline: %s", *line);
-	// printf("\t----clean_line ends----\n\n");
 }
