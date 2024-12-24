@@ -6,7 +6,7 @@
 /*   By: isastre- <isastre-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 20:53:28 by isastre-          #+#    #+#             */
-/*   Updated: 2024/12/24 01:25:54 by isastre-         ###   ########.fr       */
+/*   Updated: 2024/12/24 01:30:40 by isastre-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,14 +34,10 @@ char	*get_next_line(int fd)
 			return (NULL);
 		line[0] = '\0';
 	}
-	
 	populate_line(fd, &line);
-	// printf("line after populate_line <%s>\n", line);
 	if (line == NULL)
 		return (NULL);
-	char *next_line = ft_get_line(&line);
-	// printf("line after ft_get_line -> line: <%s> - next_line: <%s>", line, next_line);
-	return (next_line);
+	return (ft_get_line(&line));
 }
 
 void	populate_line(int fd, char **line)
