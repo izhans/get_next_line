@@ -6,7 +6,7 @@
 /*   By: isastre- <isastre-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 20:53:28 by isastre-          #+#    #+#             */
-/*   Updated: 2024/12/24 01:03:05 by isastre-         ###   ########.fr       */
+/*   Updated: 2024/12/24 01:25:54 by isastre-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 void	populate_line(int fd, char **line);
 void	ft_concat_buffer_to_line(char *buffer, char **line, int buffer_len);
 char	*ft_get_line(char **line);
-void	clean_line(char **line, int new_line_index);
+void	ft_clean_line(char **line, int new_line_index);
 
 // TODO: change function names to ft_<function_name>
 char	*get_next_line(int fd)
@@ -115,25 +115,19 @@ char	*ft_get_line(char **line)
 		i++;
 	}
 	next_line[i] = '\0';
-	clean_line(line, new_line_index);
+	ft_clean_line(line, new_line_index);
 	return (next_line);
 }
 
-void	clean_line(char **line, int new_line_index)
+void	ft_clean_line(char **line, int new_line_index)
 {
 	int		line_len;
 	char	*tmp_line;
 	int		i;
 
 	line_len = ft_strlen(*line);
-	if (line_len == 0) // ? juraria que esto nunca puede ejecutarse porque se corta antes de llegar aqui
-	{
-		*line = NULL;
-		return ;
-	}
 	if (line_len - new_line_index + 1 == 0)
 		return ft_free(line);
-	
 	tmp_line = malloc(line_len - new_line_index + 1);
 	if (tmp_line == NULL)
 		return (ft_free(line));
