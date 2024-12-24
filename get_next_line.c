@@ -6,7 +6,7 @@
 /*   By: isastre- <isastre-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 20:53:28 by isastre-          #+#    #+#             */
-/*   Updated: 2024/12/24 01:30:40 by isastre-         ###   ########.fr       */
+/*   Updated: 2024/12/24 01:40:54 by isastre-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,11 @@
 
 #include <stdio.h> // TODO: delete
 
-void	populate_line(int fd, char **line);
+void	ft_populate_line(int fd, char **line);
 void	ft_concat_buffer_to_line(char *buffer, char **line, int buffer_len);
 char	*ft_get_line(char **line);
 void	ft_clean_line(char **line, int new_line_index);
 
-// TODO: change function names to ft_<function_name>
 char	*get_next_line(int fd)
 {
 	static char	*line;
@@ -34,13 +33,21 @@ char	*get_next_line(int fd)
 			return (NULL);
 		line[0] = '\0';
 	}
-	populate_line(fd, &line);
+	ft_populate_line(fd, &line);
 	if (line == NULL)
 		return (NULL);
 	return (ft_get_line(&line));
 }
 
-void	populate_line(int fd, char **line)
+/**
+ * @param fd the file descriptor to read from
+ * @param line a pointer to the static var that contents the previous read chars
+ * reads until a \n is found
+ * if an error (-1) or EOF (0) is found, frees the buffer and the line^
+ * 						^if is EOF and the line has chars, it is not freed
+ * if not, it appends the read chars (buffer) to the line and frees the buffer
+ */
+void	ft_populate_line(int fd, char **line)
 {
 	char	*buffer;
 	int		read_chars;
@@ -51,14 +58,14 @@ void	populate_line(int fd, char **line)
 		if (buffer == NULL)
 			return (ft_free(line));
 		read_chars = read(fd, buffer, BUFFER_SIZE);
-		if (read_chars <= 0) // error en read (-1) o EOF (0)
+		if (read_chars <= 0)
 		{
 			free(buffer);
 			if (read_chars < 0 || ft_strlen(*line) == 0)
 				ft_free(line);
 			return ;
 		}
-		buffer[read_chars] = '\0'; // se coloca despues porque en caso de haber error estaria escribiendo en posiciones que no son mias
+		buffer[read_chars] = '\0';
 		ft_concat_buffer_to_line(buffer, line, read_chars);
 		free(buffer);
 	}
