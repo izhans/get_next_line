@@ -6,21 +6,19 @@
 /*   By: isastre- <isastre-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 20:53:28 by isastre-          #+#    #+#             */
-/*   Updated: 2024/12/24 01:40:54 by isastre-         ###   ########.fr       */
+/*   Updated: 2024/12/24 01:44:20 by isastre-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 #ifndef BUFFER_SIZE
-	#define BUFFER_SIZE 1
+# define BUFFER_SIZE 1
 #endif
 
-#include <stdio.h> // TODO: delete
-
-void	ft_populate_line(int fd, char **line);
-void	ft_concat_buffer_to_line(char *buffer, char **line, int buffer_len);
-char	*ft_get_line(char **line);
-void	ft_clean_line(char **line, int new_line_index);
+static void	ft_populate_line(int fd, char **line);
+static void	ft_concat_buffer_to_line(char *buffer, char **line, int buffer_len);
+static char	*ft_get_line(char **line);
+static void	ft_clean_line(char **line, int new_line_index);
 
 char	*get_next_line(int fd)
 {
@@ -47,7 +45,7 @@ char	*get_next_line(int fd)
  * 						^if is EOF and the line has chars, it is not freed
  * if not, it appends the read chars (buffer) to the line and frees the buffer
  */
-void	ft_populate_line(int fd, char **line)
+static void	ft_populate_line(int fd, char **line)
 {
 	char	*buffer;
 	int		read_chars;
@@ -71,7 +69,7 @@ void	ft_populate_line(int fd, char **line)
 	}
 }
 
-void	ft_concat_buffer_to_line(char *buffer, char **line, int buffer_len)
+static void	ft_concat_buffer_to_line(char *buffer, char **line, int buffer_len)
 {
 	int		line_len;
 	char	*concatenated_line;
@@ -99,7 +97,7 @@ void	ft_concat_buffer_to_line(char *buffer, char **line, int buffer_len)
 	*line = concatenated_line;
 }
 
-char	*ft_get_line(char **line)
+static char	*ft_get_line(char **line)
 {
 	char	*next_line;
 	int		new_line_index;
@@ -122,7 +120,7 @@ char	*ft_get_line(char **line)
 	return (next_line);
 }
 
-void	ft_clean_line(char **line, int new_line_index)
+static void	ft_clean_line(char **line, int new_line_index)
 {
 	int		line_len;
 	char	*tmp_line;
@@ -130,7 +128,7 @@ void	ft_clean_line(char **line, int new_line_index)
 
 	line_len = ft_strlen(*line);
 	if (line_len - new_line_index + 1 == 0)
-		return ft_free(line);
+		return (ft_free(line));
 	tmp_line = malloc(line_len - new_line_index + 1);
 	if (tmp_line == NULL)
 		return (ft_free(line));
