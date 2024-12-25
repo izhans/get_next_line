@@ -6,7 +6,7 @@
 /*   By: isastre- <isastre-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 20:53:28 by isastre-          #+#    #+#             */
-/*   Updated: 2024/12/24 01:44:20 by isastre-         ###   ########.fr       */
+/*   Updated: 2024/12/25 20:11:44 by isastre-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ char	*get_next_line(int fd)
 }
 
 /**
+ * @brief populates the line with the content from the file
  * @param fd the file descriptor to read from
  * @param line a pointer to the static var that contents the previous read chars
  * reads until a \n is found
@@ -69,6 +70,17 @@ static void	ft_populate_line(int fd, char **line)
 	}
 }
 
+/**
+ * @brief appends the buffer to the line
+ * @param buffer the read chars from the file
+ * @param line where to concatenate the buffer
+ * @param buffer_len the length of the buffer
+ * allocates space for the concatenated line
+ * copies line into concatenated line
+ * copies buffer into concatenated line
+ * null terminates concatenated line
+ * frees previous line and replaces it with concatenated line
+ */
 static void	ft_concat_buffer_to_line(char *buffer, char **line, int buffer_len)
 {
 	int		line_len;
@@ -97,6 +109,17 @@ static void	ft_concat_buffer_to_line(char *buffer, char **line, int buffer_len)
 	*line = concatenated_line;
 }
 
+/**
+ * @brief extracts the next line
+ * @param line the line from which to extract the next line
+ * @returns the next line
+ * if the line is empty, frees the line
+ * finds the line ending index (\n or \0 in EOF case)
+ * copies the line content until the line ending into the next line
+ * null terminates the next line
+ * cleans the copied info from the line
+ * returns the next line
+ */
 static char	*ft_get_line(char **line)
 {
 	char	*next_line;
@@ -120,6 +143,15 @@ static char	*ft_get_line(char **line)
 	return (next_line);
 }
 
+/**
+ * @brief removes the extracted info from the line
+ * @param line the line to clean
+ * @param new_line_index the position where the info to preserve starts
+ * if without the info to remove the line is empty, frees the line
+ * copies the info to preserve into the temp line and null terminates it
+ * frees the line
+ * replaces the line with the temp line
+ */
 static void	ft_clean_line(char **line, int new_line_index)
 {
 	int		line_len;
