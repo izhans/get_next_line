@@ -6,12 +6,11 @@
 /*   By: isastre- <isastre-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 20:53:54 by isastre-          #+#    #+#             */
-/*   Updated: 2024/12/24 01:03:05 by isastre-         ###   ########.fr       */
+/*   Updated: 2024/12/25 19:21:32 by isastre-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
-#include <fcntl.h> // creo que esta es solo necesaria para el main (close)
 #include <stdlib.h>
 
 char	*get_next_line(int fd);
