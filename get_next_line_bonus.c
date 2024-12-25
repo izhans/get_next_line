@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: isastre- <isastre-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 20:53:28 by isastre-          #+#    #+#             */
-/*   Updated: 2024/12/25 20:44:36 by isastre-         ###   ########.fr       */
+/*   Updated: 2024/12/25 20:40:09 by isastre-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,27 +23,27 @@ static void	ft_clean_line(char **line, int new_line_index);
 /**
  * @brief returns the next line of the given fd
  * @param fd the fd from which to read
- * @returns the next line of the fd or NULL if the line couldn't be populated
- * uses a static var to preserve the read info in succesive calls
- * if the line is not initialized, is initalized with a null char
- * the line is populated with the info from the file
- * returns NULL or the next line
+ * @returns the next line of the fd
+ * the difference with the base gnl is the [FD_SETSIZE]
+ * FD_SETSIZE defines the max number of fds
+ * if each fd has its own line, the problem of crashing read info is not possible
+ * the way to give each fd a line is to create an array of FD_SETSIZE lines
  */
 char	*get_next_line(int fd)
 {
-	static char	*line;
+	static char	*line[FD_SETSIZE];
 
-	if (!line)
+	if (!line[fd])
 	{
-		line = malloc(1);
-		if (line == NULL)
+		line[fd] = malloc(1);
+		if (line[fd] == NULL)
 			return (NULL);
-		line[0] = '\0';
+		line[fd][0] = '\0';
 	}
-	ft_populate_line(fd, &line);
-	if (line == NULL)
+	ft_populate_line(fd, &line[fd]);
+	if (line[fd] == NULL)
 		return (NULL);
-	return (ft_get_line(&line));
+	return (ft_get_line(&line[fd]));
 }
 
 /**
