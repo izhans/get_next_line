@@ -6,7 +6,7 @@
 /*   By: isastre- <isastre-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 20:53:28 by isastre-          #+#    #+#             */
-/*   Updated: 2024/12/25 20:11:44 by isastre-         ###   ########.fr       */
+/*   Updated: 2024/12/25 20:44:36 by isastre-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,15 @@ static void	ft_concat_buffer_to_line(char *buffer, char **line, int buffer_len);
 static char	*ft_get_line(char **line);
 static void	ft_clean_line(char **line, int new_line_index);
 
+/**
+ * @brief returns the next line of the given fd
+ * @param fd the fd from which to read
+ * @returns the next line of the fd or NULL if the line couldn't be populated
+ * uses a static var to preserve the read info in succesive calls
+ * if the line is not initialized, is initalized with a null char
+ * the line is populated with the info from the file
+ * returns NULL or the next line
+ */
 char	*get_next_line(int fd)
 {
 	static char	*line;
