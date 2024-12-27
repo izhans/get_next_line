@@ -6,14 +6,11 @@
 /*   By: isastre- <isastre-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 20:53:28 by isastre-          #+#    #+#             */
-/*   Updated: 2024/12/27 13:05:12 by isastre-         ###   ########.fr       */
+/*   Updated: 2024/12/27 21:04:57 by isastre-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line_bonus.h"
-#ifndef BUFFER_SIZE
-# define BUFFER_SIZE 1
-#endif
 
 static void	ft_populate_line(int fd, char **line);
 static void	ft_concat_buffer_to_line(char *buffer, char **line, int buffer_len);
@@ -31,8 +28,10 @@ static void	ft_clean_line(char **line, int new_line_index);
  */
 char	*get_next_line(int fd)
 {
-	static char	*line[FD_SETSIZE];
+	static char	*line[__FD_SETSIZE];
 
+	if (BUFFER_SIZE <= 0 || fd < 0 || fd > __FD_SETSIZE)
+		return (NULL);
 	if (!line[fd])
 	{
 		line[fd] = malloc(1);
@@ -60,11 +59,11 @@ static void	ft_populate_line(int fd, char **line)
 	char	*buffer;
 	int		read_chars;
 
-	while (!ft_has_new_line(*line))
+	buffer = malloc(BUFFER_SIZE + 1);
+	if (buffer == NULL)
+		return (ft_free(line));
+	while (!ft_has_new_line(*line)) // ? puedo simplificar a buffer?
 	{
-		buffer = malloc(BUFFER_SIZE + 1);
-		if (buffer == NULL)
-			return (ft_free(line));
 		read_chars = read(fd, buffer, BUFFER_SIZE);
 		if (read_chars <= 0)
 		{
@@ -75,8 +74,8 @@ static void	ft_populate_line(int fd, char **line)
 		}
 		buffer[read_chars] = '\0';
 		ft_concat_buffer_to_line(buffer, line, read_chars);
-		free(buffer);
 	}
+	free(buffer);
 }
 
 /**
@@ -168,7 +167,7 @@ static void	ft_clean_line(char **line, int new_line_index)
 	int		i;
 
 	line_len = ft_strlen(*line);
-	if (line_len - new_line_index == 0)
+	if (line_len - new_line_index == 0) // ? puedo hacer line_len == new_line_index que queda mas legible
 		return (ft_free(line));
 	tmp_line = malloc(line_len - new_line_index + 1);
 	if (tmp_line == NULL)
