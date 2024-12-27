@@ -6,7 +6,7 @@
 /*   By: isastre- <isastre-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 20:53:28 by isastre-          #+#    #+#             */
-/*   Updated: 2024/12/25 20:44:36 by isastre-         ###   ########.fr       */
+/*   Updated: 2024/12/27 13:05:03 by isastre-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,7 +168,7 @@ static void	ft_clean_line(char **line, int new_line_index)
 	int		i;
 
 	line_len = ft_strlen(*line);
-	if (line_len - new_line_index + 1 == 0)
+	if (line_len - new_line_index == 0)
 		return (ft_free(line));
 	tmp_line = malloc(line_len - new_line_index + 1);
 	if (tmp_line == NULL)

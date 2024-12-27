@@ -21,8 +21,12 @@ int main()
 	{
 		line = get_next_line(fd1);
 		printf("fd %i\tline %d: %s", fd1, i, line);
+		free(line);
+		
 		line = get_next_line(fd2);
 		printf("fd %i\tline %d: %s", fd2, i, line);
+		free(line);
+
 		line = get_next_line(fd3);
 		printf("fd %i\tline %d: %s", fd3, i, line);
 		free(line);
