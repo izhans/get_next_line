@@ -6,7 +6,7 @@
 /*   By: isastre- <isastre-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 16:23:17 by isastre-          #+#    #+#             */
-/*   Updated: 2024/12/25 20:06:50 by isastre-         ###   ########.fr       */
+/*   Updated: 2025/06/05 13:59:00 by isastre-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,9 @@ int	ft_has_new_line(char *line)
  * @param str the string to measure
  * @returns the length of the string or 0 if its NULL
  */
-int	ft_strlen(char *str)
+size_t	ft_strlen(char *str)
 {
-	int	i;
+	size_t	i;
 
 	i = 0;
 	if (str == NULL)

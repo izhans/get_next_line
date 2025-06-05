@@ -8,7 +8,7 @@ int main()
 	char *filename;
 	int fd;
 
-	filename = "test_files/bird";
+	filename = "test_files/quijote";
 	fd = open(filename, O_RDONLY);
 
 	char *line;

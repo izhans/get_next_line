@@ -6,7 +6,7 @@
 /*   By: isastre- <isastre-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 20:53:54 by isastre-          #+#    #+#             */
-/*   Updated: 2024/12/27 20:57:54 by isastre-         ###   ########.fr       */
+/*   Updated: 2025/06/05 14:08:09 by isastre-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ char	*get_next_line(int fd);
 // utils
 void	ft_free(char **line);
 int		ft_has_new_line(char *line);
-int		ft_strlen(char *str);
+size_t	ft_strlen(char *str);
 int		ft_where_is_new_line(char *line);
 
 #endif

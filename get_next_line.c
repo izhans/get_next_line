@@ -6,7 +6,7 @@
 /*   By: isastre- <isastre-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 20:53:28 by isastre-          #+#    #+#             */
-/*   Updated: 2024/12/27 21:04:00 by isastre-         ###   ########.fr       */
+/*   Updated: 2025/06/05 13:59:53 by isastre-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,8 @@ static void	ft_populate_line(int fd, char **line)
 	buffer = malloc(BUFFER_SIZE + 1);
 	if (buffer == NULL)
 		return (ft_free(line));
-	while (!ft_has_new_line(*line)) // ? puedo simplificar a buffer?
+	buffer[0] = '\0';
+	while (!ft_has_new_line(buffer))
 	{
 		read_chars = read(fd, buffer, BUFFER_SIZE);
 		if (read_chars <= 0)
@@ -167,7 +168,7 @@ static void	ft_clean_line(char **line, int new_line_index)
 	int		i;
 
 	line_len = ft_strlen(*line);
-	if (line_len - new_line_index == 0) // ? puedo hacer line_len == new_line_index que queda mas legible
+	if (line_len == new_line_index)
 		return (ft_free(line));
 	tmp_line = malloc(line_len - new_line_index + 1);
 	if (tmp_line == NULL)
